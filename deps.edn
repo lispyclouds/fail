@@ -1,0 +1,21 @@
+{:paths   ["src" "test"]
+ :deps    {org.clojure/clojure         {:mvn/version "1.10.3"}
+           failjure/failjure           {:mvn/version "2.2.0"}
+           com.stuartsierra/component  {:mvn/version "1.0.0"}
+           metosin/reitit-core         {:mvn/version "0.5.13"}
+           metosin/reitit-http         {:mvn/version "0.5.13"}
+           metosin/reitit-interceptors {:mvn/version "0.5.13"}
+           metosin/reitit-malli        {:mvn/version "0.5.13"}
+           metosin/reitit-ring         {:mvn/version "0.5.13"}
+           metosin/reitit-sieppari     {:mvn/version "0.5.13"}
+           metosin/reitit-middleware   {:mvn/version "0.5.13"}
+           metosin/muuntaja            {:mvn/version "0.6.8"}
+           ring/ring-jetty-adapter     {:mvn/version "1.9.3"}
+           org.postgresql/postgresql   {:mvn/version "42.2.20"}
+           com.github.seancorfield/next.jdbc {:mvn/version "1.2.659"}}
+ :aliases {:test    {:extra-deps {lambdaisland/kaocha    {:mvn/version "1.0.829"}
+                                  org.clojure/test.check {:mvn/version "1.1.0"}}
+                     :main-opts  ["-m" "kaocha.runner"]}
+           :depstar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
+                     :ns-default   hf.depstar
+                     :exec-args    {}}}}

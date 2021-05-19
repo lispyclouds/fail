@@ -1,0 +1,35 @@
+{:min-bb-version "0.4.0"
+
+ :tasks {docker-clean {:doc  "Cleans up containers"
+                       :task (do
+                               (shell {:continue true} "docker kill test-storage")
+                               (shell {:continue true} "docker rm test-storage"))}
+         test         {:doc  "Sets up the system and runs tests"
+                       :task (do
+                               (run 'docker-clean)
+                               (try
+                                 (shell "docker run
+                                   -d
+                                   --name test-storage
+                                   -p 5433:5432
+                                   -e POSTGRES_DB=contacts-test
+                                   -e POSTGRES_USER=bob
+                                   -e POSTGRES_PASSWORD=bobby-tables
+                                   postgres:alpine")
+                                 (println "Waiting for the system to be ready")
+                                 (Thread/sleep 3000)
+                                 (shell "clojure -M:test")
+                                 (finally
+                                   (run 'docker-clean))))}
+         compile      {:doc  "Builds the compiled artifact"
+                       :task (shell "clojure
+                               -X:depstar
+                               uberjar
+                               :jar
+                               fail.jar
+                               :aot
+                               true
+                               :main-class
+                               fail.main")}
+         clean        {:doc  "Cleans up"
+                       :task (shell "rm -rf .cpcache fail.jar")}}}
